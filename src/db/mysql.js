@@ -18,9 +18,7 @@ const connect_to_mysql = () => {
     if (err) {
       console.error(`DB error:`, err);
       setTimeout(connect_to_mysql, 2000);
-    } else {
-      console.log("DB conectada");
-    }
+    } else console.log("DB conectada");
   });
 
   conexion.on("error", (err) => {
