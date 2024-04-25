@@ -16,7 +16,7 @@ const connect_to_mysql = () => {
 
   conexion.connect((err) => {
     if (err) {
-      console.error(`DB error: ${err}`);
+      console.error(`DB error:`, err);
       setTimeout(connect_to_mysql, 2000);
     } else {
       console.log("DB conectada");
@@ -35,27 +35,52 @@ connect_to_mysql();
 const todos = (tabla) => {
   return new Promise((resolve, reject) => {
     conexion.query(`SELECT * FROM ${tabla}`, (error, result) => {
-      if (error) return reject(error);
-      resolve(result);
+      return error ? reject(error) : resolve(result);
     });
   });
 };
 
 const uno = (tabla, id) => {
-  return `Registro con el id:${id}`;
+  return new Promise((resolve, reject) => {
+    conexion.query(`SELECT * FROM ${tabla} WHERE id=${id}`, (error, result) => {
+      return error ? reject(error) : resolve(result);
+    });
+  });
 };
 
 const agregar = (tabla, data) => {
-  return `Agregar registro con la data:${id}`;
+  return new Promise((resolve, reject) => {
+    conexion.query(`INSERT INTO ${tabla} SET ?`, data, (error, result) => {
+      return error ? reject(error) : resolve(result);
+    });
+  });
 };
 
-const eliminar = (tabla, id) => {
-  return `Eliminar registro con el id:${id}`;
+const actualizar = (tabla, data) => {
+  return new Promise((resolve, reject) => {
+    conexion.query(
+      `UPDATE ${tabla} SET ? WHERE id = ?`,
+      [data, data.id],
+      (error, result) => {
+        return error ? reject(error) : resolve(result);
+      }
+    );
+  });
+};
+
+const eliminar = (tabla, data) => {
+  const { id } = data;
+  return new Promise((resolve, reject) => {
+    conexion.query(`DELETE FROM ${tabla} WHERE id=${id}`, (error, result) => {
+      return error ? reject(error) : resolve(result);
+    });
+  });
 };
 
 module.exports = {
   todos,
   uno,
   agregar,
+  actualizar,
   eliminar,
 };
