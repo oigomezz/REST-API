@@ -2,7 +2,10 @@ require("dotenv").config();
 
 module.exports = {
   app: {
-    port: process.env.PORT || 5555,
+    port: process.env.PORT || 3000,
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET || "notasecret!",
   },
   mysql: {
     host: process.env.MYSQL_HOST || "localhost",
