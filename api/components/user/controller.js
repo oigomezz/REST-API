@@ -1,5 +1,4 @@
-const nanoid = require("nanoid");
-
+const crypto = require("crypto");
 const auth = require("../auth");
 
 const TABLA = "user";
@@ -7,7 +6,7 @@ const TABLA = "user";
 module.exports = function (injectedStore) {
   let store = injectedStore;
   if (!store) {
-    store = require("../../../store/dummy");
+    store = require("../../../store/mysql");
   }
 
   function list() {
@@ -25,7 +24,7 @@ module.exports = function (injectedStore) {
     };
 
     if (body.id) user.id = body.id;
-    else user.id = nanoid();
+    else user.id = crypto.randomBytes(16).toString("hex");
 
     if (body.password || body.username) {
       await auth.upsert({
