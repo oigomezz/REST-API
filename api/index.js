@@ -19,7 +19,9 @@ app.use("/api/auth", auth);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.use(errors);
+app.set("port", config.app.port);
+const port = app.get("port");
 
-app.listen(config.api.port, () => {
-  console.log("Api escuchando en el puerto ", config.api.port);
+app.listen(port, () => {
+  console.log(`Api escuchando en el puerto ${port}`);
 });

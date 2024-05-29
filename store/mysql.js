@@ -14,14 +14,14 @@ let connection;
 function handleConnection() {
   connection = mysql.createConnection(dbconfig);
 
-  connectionconnect((err) => {
+  connection.connect((err) => {
     if (err) {
       console.error(`DB error:`, err);
       setTimeout(connect_to_mysql, 2000);
     } else console.log("DB conectada");
   });
 
-  conexion.on("error", (err) => {
+  connection.on("error", (err) => {
     console.error(`DB error: ${err}`);
     if (err.code === "PROTOCOL_CONNECTION_LOST") connect_to_mysql();
     else throw err;
@@ -32,7 +32,7 @@ handleConnection();
 
 function list(table) {
   return new Promise((resolve, reject) => {
-    conexion.query(`SELECT * FROM ${table}`, (error, result) => {
+    connection.query(`SELECT * FROM ${table}`, (error, result) => {
       return error ? reject(error) : resolve(result);
     });
   });
@@ -40,15 +40,18 @@ function list(table) {
 
 function get(table, id) {
   return new Promise((resolve, reject) => {
-    conexion.query(`SELECT * FROM ${table} WHERE id=${id}`, (error, result) => {
-      return error ? reject(error) : resolve(result);
-    });
+    connection.query(
+      `SELECT * FROM ${table} WHERE id=${id}`,
+      (error, result) => {
+        return error ? reject(error) : resolve(result);
+      }
+    );
   });
 }
 
 function insert(table, data) {
   return new Promise((resolve, reject) => {
-    conexion.query(`INSERT INTO ${table} SET ?`, data, (error, result) => {
+    connection.query(`INSERT INTO ${table} SET ?`, data, (error, result) => {
       return error ? reject(error) : resolve(result);
     });
   });
