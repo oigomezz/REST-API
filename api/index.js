@@ -25,5 +25,5 @@ app.set("port", config.app.port);
 const port = app.get("port");
 
 app.listen(port, () => {
-  console.log(`Api escuchando en el puerto ${port}`);
+  console.log(`Api escuchando en el puerto: ${port}`);
 });

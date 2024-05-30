@@ -11,9 +11,10 @@ app.use(bodyParser.json());
 // RUTAS
 app.use("/", router);
 
-app.set("port", config.mysqlService.port);
-const port = app.get("port");
+const port = config.cacheService.port;
 
 app.listen(port, () => {
-  console.log(`Servicio de mysql escuchando en el puerto: ${port}`);
+  console.log(
+    `Servicio de caché redis escuchando en el puerto: ${config.cacheService.port}`
+  );
 });
